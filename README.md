@@ -1,4 +1,4 @@
-# Blip2CPI
+# WiseInteract
 
 ## 1.Installation
 ```bash
