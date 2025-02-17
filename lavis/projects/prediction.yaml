@@ -1,0 +1,50 @@
+model:
+  arch: blip2_portein_smiles_matching
+  model_type: pretrain
+  prefix_pretrained: /PretrainStage1Total/20241101080/ ###
+  pretrained: /PretrainStage1Total/20241101080/ 
+  use_grad_checkpoint: False
+
+datasets:
+  cpi_prediction: 
+    build_info:
+      test:
+        url: predict.parquet
+      use_neg: others 
+    proteins_processor:
+        train:
+          name: "proteins_processor"
+        val:
+          name: "proteins_processor"
+        test:
+          name: "proteins_processor"
+    smiles_processor:
+        train:
+          name: "smiles_processor"
+        val:
+          name: "smiles_processor"
+        test:
+          name: "smiles_processor"
+
+run:
+  task: EvaluateCPI
+  # optimization-specific
+  batch_size_train: 100
+  batch_size_eval: 100
+  batch_size_test: 100
+  num_workers: 6
+  
+  seed: 8686
+  output_dir: "output/tong" ###
+
+  evaluate: True
+  test_splits: ["test"]
+  evaluation_way: "pcm" 
+  datasets: "test"
+  test_path: predict.parquet
+
+  # distribution-specific
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: True
