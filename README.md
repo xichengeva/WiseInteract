@@ -19,7 +19,7 @@ python -m torch.distributed.run --nproc_per_node=1 train.py --cfg-path pretrain_
 ```
 ## 3.evaluate:
 ```bash
-python -m torch.distributed.run --nproc_per_node=1 evaluate.py --cfg-path evaluate.yaml
+python -m torch.distributed.run --nproc_per_node=1 evaluate.py --cfg-path prediction.yaml
 ```
 ## 4.related data and model are saved below:
 https://zenodo.org/records/14375583
