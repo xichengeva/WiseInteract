@@ -11,10 +11,10 @@ pip install --upgrade transformers==4.27
 pip install fair-esm
 pip install seaborn
 
-2. train:
+3. train:
 python -m torch.distributed.run --nproc_per_node=1 train.py --cfg-path pretrain_stage1.yaml
 
-3. evaluate:
+4. evaluate:
 python -m torch.distributed.run --nproc_per_node=1 evaluate.py --cfg-path evaluate.yaml
 
 
