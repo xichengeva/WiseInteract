@@ -1,7 +1,7 @@
 # Blip2CPI
 
 1. environment:
-conda create -n cpi python=3.8
+"conda create -n cpi python=3.8
 conda activate cpi
 conda install -c conda-forge rdkit
 pip install dgl
@@ -9,7 +9,7 @@ pip install dgllife
 pip install salesforce-lavis==1.0.0
 pip install --upgrade transformers==4.27
 pip install fair-esm
-pip install seaborn
+pip install seaborn"
 
 3. train:
 python -m torch.distributed.run --nproc_per_node=1 train.py --cfg-path pretrain_stage1.yaml
