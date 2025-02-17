@@ -1,0 +1,52 @@
+model:
+  arch: blip2_cpi
+  model_type: pretrain
+  load_pretrained: False 
+  freeze_protein: True
+  type_neg: 1 
+
+datasets:
+  cpi_prediction: 
+    build_info:
+      train:
+        url: train.parquet
+      val: 
+        url: valid.parquet
+      test:
+        url: test.parquet
+      use_neg: add_neg1 
+    proteins_processor:
+        train:
+          name: "proteins_processor"
+    smiles_processor:
+        train:
+          name: "smiles_processor"   
+
+run:
+  task: cpi_pretrain
+  # optimizer
+  lr_sched: "linear_warmup_cosine_lr"
+  init_lr: 1e-5
+  min_lr: 1e-6
+  warmup_lr: 1e-6
+
+  weight_decay: 0.05
+  max_epoch: 100
+  batch_size_train: 100
+  batch_size_eval: 64
+  num_workers: 4
+  warmup_steps: 5000
+
+  seed: 8686
+  output_dir: "output/train"
+
+  amp: True
+  resume_ckpt_path: null
+
+  evaluate: False 
+  train_splits: ["train"]
+
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: True
