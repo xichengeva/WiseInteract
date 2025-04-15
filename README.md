@@ -34,7 +34,7 @@ pip install seaborn
 python protein.py
 esm-extract esm2_t33_650M_UR50D protein.txt proteins_emb_esm2 --repr_layers 33 --include per_tok
 ```
-## 2.Retrain:
+## 2.Train:
 ```bash
 python -m torch.distributed.run --nproc_per_node=1 train.py --cfg-path pretrain_stage1.yaml
 ```
