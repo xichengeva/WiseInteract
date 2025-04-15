@@ -76,13 +76,11 @@ def main():
     task = tasks.setup_task(cfg)
     datasets = task.build_datasets(cfg)
 
-    #####################################3
     model = task.build_model(cfg, 0)
     runner = RunnerBase(
         cfg=cfg, job_id=job_id, task=task, model=model, datasets=datasets, times=0
     )
     runner.evaluate(skip_reload=True)
-    ######################################
 
 if __name__ == "__main__":
     main()
