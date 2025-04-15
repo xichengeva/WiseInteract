@@ -26,9 +26,9 @@ from transformers import BertTokenizer
 class Blip2BaseCPI(BaseModel):
     @classmethod
     def init_tokenizer(cls, truncation_side="right"):
-        tokenizer = BertTokenizer.from_pretrained("bert-base-uncased", truncation_side=truncation_side)
+        tokenizer = BertTokenizer.from_pretrained("bert-base-smiles", truncation_side=truncation_side)
         tokenizer.add_special_tokens({"bos_token": "[DEC]"})
-        return tokenizer # /home/datahouse1/niubuying/CPI/LAVIS/models/bert-base-smiles
+        return tokenizer 
 
     def maybe_autocast(self, dtype=torch.float16):
         # if on cpu, don't use autocast
