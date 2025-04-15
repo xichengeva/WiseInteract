@@ -26,7 +26,7 @@ def load_json(file_path):
 @registry.register_processor("proteins_processor")
 class ProteinsFeatureProcessor(BaseProcessor):
     def __init__(self): 
-        self.seqIndexDict = load_json('SeqIndex.json') # 蛋白序列以及编号对应的json文件路径
+        self.seqIndexDict = load_json('SeqIndex.json') 
 
     def get_attention_mask(self, seq):
         return torch.sum(seq != 1, dim=2) != 0
@@ -47,9 +47,9 @@ class ProteinsFeatureProcessor(BaseProcessor):
         t = torch.stack(temp)
         return t, nums
 
-    def __call__(self, protein): #传入proteins序列，给出esm后的embedding  
+    def __call__(self, protein): 
         seqIndex = self.seqIndexDict[protein]
-        representations = torch.load('proteins_emb_esm2/proteins%s.pt'% seqIndex) #蛋白序列对应的embedding路径
+        representations = torch.load('proteins_emb_esm2/proteins%s.pt'% seqIndex) 
         rep = torch.Tensor(representations['representations'][33])
         rep = rep.unsqueeze(0)
         return rep
