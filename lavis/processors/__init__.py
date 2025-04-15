@@ -6,27 +6,6 @@
 """
 
 from lavis.processors.base_processor import BaseProcessor
-
-# from lavis.processors.alpro_processors import (
-#     AlproVideoTrainProcessor,
-#     AlproVideoEvalProcessor,
-# )
-# from lavis.processors.blip_processors import (
-#     BlipImageTrainProcessor,
-#     Blip2ImageTrainProcessor,
-#     BlipImageEvalProcessor,
-#     BlipCaptionProcessor,
-# )
-# from lavis.processors.blip_diffusion_processors import (
-#     BlipDiffusionInputImageProcessor,
-#     BlipDiffusionTargetImageProcessor,
-# )
-# from lavis.processors.gpt_processors import (
-#     GPTVideoFeatureProcessor,
-#     GPTDialogueProcessor,
-# )
-# from lavis.processors.clip_processors import ClipImageTrainProcessor
-
 from lavis.processors.cpi_processors import (
     ProteinsFeatureProcessor,
     SmilesFeatureProcessor,
@@ -35,25 +14,8 @@ from lavis.common.registry import registry
 
 __all__ = [
     "BaseProcessor",
-    # CPI
     "ProteinsFeatureProcessor",
     "SmilesFeatureProcessor",
-    # # ALPRO
-    # "AlproVideoTrainProcessor",
-    # "AlproVideoEvalProcessor",
-    # # BLIP
-    # "BlipImageTrainProcessor",
-    # "Blip2ImageTrainProcessor",
-    # "BlipImageEvalProcessor",
-    # "BlipCaptionProcessor",
-    # # BLIP-Diffusion
-    # "BlipDiffusionInputImageProcessor",
-    # "BlipDiffusionTargetImageProcessor",
-    # # CLIP
-    # "ClipImageTrainProcessor",
-    # # GPT
-    # "GPTVideoFeatureProcessor",
-    # "GPTDialogueProcessor",
 ]
 
 
