@@ -34,17 +34,6 @@ def plot_heatmap(x, batch, prePath):
 @registry.register_model("blip2_cpi")
 @registry.register_model("blip2_feature_extractor_cpi")
 class Blip2QformerCPI(Blip2BaseCPI):
-    """
-    BLIP2 first-stage model with Q-former and ViT.
-    Supported model types:
-        - pretrained: pretrained model with vit-g
-        - pretrain_vitL: pretrained model with vit-large
-        - coco: fintuned model on coco
-    Usage:
-        >>> from lavis.models import load_model
-        >>> model = load_model("blip2", "pretrain")
-    """
-
     PRETRAINED_MODEL_CONFIG_DICT = {
         "pretrain": "configs/models/blip2/blip2_pretrain.yaml",
         "pretrain_vitL": "configs/models/blip2/blip2_pretrain_vitL.yaml",
@@ -81,10 +70,7 @@ class Blip2QformerCPI(Blip2BaseCPI):
         self.temp = nn.Parameter(0.07 * torch.ones([]))
         self.max_txt_len = max_txt_len
         self.type_neg = type_neg
-        # if matrix_path != 0:
-        #     with open(matrix_path) as f: #应该是这里卡住了
-        #         self.labels_matrix = json.load(f)
-
+     
     def itm_labels(self, proteins, smiles):
         proteins_embeds = proteins 
         proteins_atts = torch.ones(proteins_embeds.size()[:-1], dtype=torch.long).to(proteins.device)
@@ -134,6 +120,7 @@ class Blip2QformerCPI(Blip2BaseCPI):
         return sim_i2t, sim_t2i
 
     def forward(self, samples):
+        ###============== contrastive learning ===================###
         protein_embeds = samples['proteins'] # torch.Size([100, 1016, 1280])
         bs = protein_embeds.size(0)
         sim_i2t_part1, sim_t2i_part1 = self.getSpFromBatch(samples['proteins'], samples["smiles"])  # torch.Size([bs, bs*num_gpu]) # torch.Size([10, 20])
@@ -144,47 +131,26 @@ class Blip2QformerCPI(Blip2BaseCPI):
             F.cross_entropy(sim_i2t_part1, targets_part1, label_smoothing=0.1)
             + F.cross_entropy(sim_t2i_part1, targets_part1, label_smoothing=0.1)
         ) / 2
-
-        # 正负样本分开来算
-        # print(self.type_neg)
         if self.type_neg == 0:
             loss_itc_part2 = 0
-        else:
-            if self.type_neg == 1:
-                sim_i2t_neg, sim_t2i_neg = self.getSpFromBatch(samples["negproteins"], samples["negsmiles"])
-                sim_i2t_true = torch.cat([torch.diag(sim_i2t_part1),torch.diag(sim_i2t_neg)], dim=0)
-                sim_t2i_true = torch.cat([torch.diag(sim_t2i_part1),torch.diag(sim_t2i_neg)], dim=0)
-            # elif self.type_neg == 2:
-            #     sim_i2t_neg1, sim_t2i_neg1 = self.getSpFromBatch(samples["negproteins1"], samples["negsmiles1"])  # torch.Size([bs, bs*num_gpu])
-            #     sim_i2t_neg2, sim_t2i_neg2 = self.getSpFromBatch(samples["negproteins2"], samples["negsmiles2"])  # torch.Size([bs, bs*num_gpu])
-            #     sim_i2t_true = torch.cat([torch.diag(sim_i2t_part1), torch.diag(sim_i2t_neg1), torch.diag(sim_i2t_neg2)], dim=0)
-            #     print(sim_i2t_true.shape)
-            #     sim_t2i_true = torch.cat([torch.diag(sim_t2i_part1), torch.diag(sim_t2i_neg1), torch.diag(sim_t2i_neg2)], dim=0)
-            # 真样本 只取 对角线
+        elif self.type_neg == 1:
+            sim_i2t_neg, sim_t2i_neg = self.getSpFromBatch(samples["negproteins"], samples["negsmiles"])
+            sim_i2t_true = torch.cat([torch.diag(sim_i2t_part1),torch.diag(sim_i2t_neg)], dim=0)
+            sim_t2i_true = torch.cat([torch.diag(sim_t2i_part1),torch.diag(sim_t2i_neg)], dim=0)
             targets_true = torch.zeros(bs*(self.type_neg + 1)).to(protein_embeds.device)
             targets_true[:bs] = 1
             loss_itc_part2 = (
                 F.binary_cross_entropy_with_logits(sim_i2t_true, targets_true) 
                 + F.binary_cross_entropy_with_logits(sim_t2i_true, targets_true) 
             ) / 2
-        loss_itc = loss_itc_part1 + loss_itc_part2 #0.8*
-        # loss_itc = loss_itc*0
+        loss_itc = loss_itc_part1 + loss_itc_part2
 
-        ###============== protein-smiles Matching ===================###
-        ### 使用训练集中的负样本 ###
+        ###============== Matching ===================###
         if self.type_neg == 1:
             itm0_logits = self.itm_labels(samples['proteins'], samples['smiles'])
             itm1_logits = self.itm_labels(samples['negproteins'], samples['negsmiles'])
             logits = torch.cat([itm0_logits, itm1_logits], dim=0).to(protein_embeds.device)
             itm_labels = torch.cat([torch.ones(bs, dtype=torch.long), torch.zeros(bs, dtype=torch.long)], dim=0).to(protein_embeds.device)
-            loss_itm = F.cross_entropy(logits, itm_labels)
-            # loss_itm = loss_itm * 0
-        elif self.type_neg == 2:
-            itm0_logits = self.itm_labels(samples['proteins'], samples['smiles'])
-            itm1_logits = self.itm_labels(samples['negproteins1'], samples['negsmiles1'])
-            itm2_logits = self.itm_labels(samples['negproteins2'], samples['negsmiles2'])
-            logits = torch.cat([itm0_logits, itm1_logits, itm2_logits], dim=0).to(protein_embeds.device)
-            itm_labels = torch.cat([torch.ones(bs, dtype=torch.long), torch.zeros(bs, dtype=torch.long), torch.zeros(bs, dtype=torch.long)], dim=0).to(protein_embeds.device)
             loss_itm = F.cross_entropy(logits, itm_labels)
         else:
             smiles = samples['smiles']
@@ -241,9 +207,8 @@ class Blip2QformerCPI(Blip2BaseCPI):
 
             itm_labels = torch.cat([torch.ones(bs, dtype=torch.long), torch.zeros(2 * bs, dtype=torch.long)], dim=0).to(protein_embeds.device)
             loss_itm = F.cross_entropy(logits, itm_labels)
-        # loss_itm = loss_itm * 0 ####
 
-        ##================= smiles generations ========================##
+        ##================= recoverying ========================##
         smiles = samples["smiles"]
         protein_atts = torch.ones(protein_embeds.size()[:-1], dtype=torch.long).to(protein_embeds.device) # torch.Size([100, 1016])
         query_tokens = self.query_tokens.expand(protein_embeds.shape[0], -1, -1) # torch.Size([100, 32, 768])
@@ -266,7 +231,6 @@ class Blip2QformerCPI(Blip2BaseCPI):
             labels=labels,
         )
         loss_lm = lm_output.loss
-        # loss_lm = loss_lm * 0 #########
 
         return BlipOutput(
             loss = loss_itc + loss_itm + loss_lm,
