@@ -43,9 +43,6 @@ def parse_args():
     )
 
     args = parser.parse_args()
-    # if 'LOCAL_RANK' not in os.environ:
-    #     os.environ['LOCAL_RANK'] = str(args.local_rank)
-
     return args
 
 
@@ -74,7 +71,7 @@ def main():
 
     # set after init_distributed_mode() to only log on master.
     setup_logger()
-    # cfg.pretty_print()        
+    cfg.pretty_print()        
 
     task = tasks.setup_task(cfg)
     datasets = task.build_datasets(cfg)
