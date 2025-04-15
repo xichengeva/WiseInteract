@@ -75,26 +75,18 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 warnings.filterwarnings("ignore")
 
 def main():
-    # allow auto-dl completes on main process without timeout when using NCCL backend.
-    # os.environ["NCCL_BLOCKING_WAIT"] = "1"
-
     # set before init_distributed_mode() to ensure the same job_id shared across all ranks.
     job_id = now()
-
     cfg = Config(parse_args())
-
     init_distributed_mode(cfg.run_cfg)
-
     setup_seeds(cfg)
-
+ 
     # set after init_distributed_mode() to only log on master.
     setup_logger()
-
-    # cfg.pretty_print()
+    cfg.pretty_print()
     task = tasks.setup_task(cfg)
     datasets = task.build_datasets(cfg)
     model = task.build_model(cfg, num=0)
-
     runner = get_runner_class(cfg)(
         cfg=cfg, job_id=job_id, task=task, model=model, datasets=datasets, times = 0,
     )
