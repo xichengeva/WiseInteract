@@ -24,13 +24,6 @@ from lavis.models.blip2_models.blip2_cpi import (
 )
 from lavis.models.blip_models.blip_outputs import BlipOutput, BlipOutputFeatures
 
-def plot_heatmap(x, batch, prePath):
-    f, ax = plt.subplots(figsize=(130,100))
-    ax = sns.heatmap(x, annot=True,cmap = 'Blues',ax=ax,fmt ='.2f')#,vmin=0, vmax=1
-    plt.title('score',fontdict={'size': 12})
-    plt.savefig(prePath + '%s.png' % batch)
-    plt.show()
-
 @registry.register_model("blip2_cpi")
 @registry.register_model("blip2_feature_extractor_cpi")
 class Blip2QformerCPI(Blip2BaseCPI):
