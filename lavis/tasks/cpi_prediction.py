@@ -69,29 +69,16 @@ class ProteinSMILESEvaluation(BaseTask):
         test_path = self.cfg.run_cfg.test_path.split('/')[-1].split('.')[0]
         if evaluation_way == "pcm":
             predictions = model(samples, "pcm")
-            # predictions = outputs.max(1)[1]
             return predictions.cpu().numpy() 
         elif evaluation_way == "pcc":
             sim = model(samples, "pcc").cpu().numpy()
             return torch.from_numpy(sim).cpu().numpy()
-        elif evaluation_way == "pcc_map":
-            sims = model(samples, "pcc_heatmap")
-            return sims.cpu().numpy()
-        elif evaluation_way == "pcc_pca":
-            sims = model(samples, "pcc_pca", test_path)
-            return sims.cpu().numpy()
-        elif evaluation_way == "pcc_pcm_pertarget":
-            sims, predictions = model(samples, "pcc_pcm", test_path)
-            return sims.cpu().numpy(), predictions.cpu().numpy()
-        elif evaluation_way == "pcc_pcm":
-            sims, predictions = model(samples, "pcc_pcm", test_path)
-            return sims.cpu().numpy(), predictions.cpu().numpy()
 
     def after_evaluation(self, val_result, split_name, epoch, **kwargs):
         val_result = np.array(val_result).flatten()
         evaluation_way = self.cfg.run_cfg.evaluation_way
         datasets = self.cfg.run_cfg.datasets
-        eval_result_file = '%s_%s.csv' % (datasets, evaluation_way) # _%s , self.epoch
+        eval_result_file = '%s_%s.csv' % (datasets, evaluation_way)
         self.epoch = self.epoch + 1
         val_result = min_max_normalize(np.array(val_result))
         val_df = pd.DataFrame({
@@ -118,7 +105,7 @@ class ProteinSMILESEvaluation(BaseTask):
         prefix = '/LAVIS/'
         evaluation_way = self.cfg.run_cfg.evaluation_way
         datasets = self.cfg.run_cfg.datasets
-        with open(prefix + '%s_%s.txt' % (datasets, evaluation_way), "a") as f: ##
+        with open(prefix + '%s_%s.txt' % (datasets, evaluation_way), "a") as f:
             f.write(test_path.split('/')[-1].split('.')[0] + '\t' + json.dumps(log_stats) + "\n")
 
         logging.info(metrics)
