@@ -11,13 +11,6 @@ from lavis.common.registry import registry
 from lavis.models.base_model import all_gather_with_grad, concat_all_gather
 from lavis.models.blip2_models.blip2_qformer_cpi import Blip2QformerCPI
 
-def plot_heatmap(x, batch, prePath):
-    f, ax = plt.subplots(figsize=(130,100))
-    ax = sns.heatmap(x, annot=True,cmap = 'Blues',ax=ax,fmt ='.2f')#,vmin=0, vmax=1
-    plt.title('score',fontdict={'size': 12})
-    plt.savefig(prePath + '%s.png' % batch)
-    plt.show()
-
 @registry.register_model("blip2_portein_smiles_matching")
 class Blip2ITMCPI(Blip2QformerCPI):
     def __init__(
