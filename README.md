@@ -42,5 +42,5 @@ python -m torch.distributed.run --nproc_per_node=1 train.py --cfg-path train.yam
 ```bash
 python -m torch.distributed.run --nproc_per_node=1 evaluate.py --cfg-path prediction.yaml
 ```
-## 4.related data and model are saved below:
+## 4.Related data and model are saved below:
 [https://zenodo.org/records/14375583](https://zenodo.org/records/15220346)
