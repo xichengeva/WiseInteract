@@ -29,13 +29,18 @@ pip install seaborn
 ```
 
 # Running WiseInteract
-## 1.Retrain:
+## 1.Extract protein embeddings:
+```bash
+python protein.py
+esm-extract esm2_t33_650M_UR50D protein.txt proteins_emb_esm2 --repr_layers 33 --include per_tok
+```
+## 2.Retrain:
 ```bash
 python -m torch.distributed.run --nproc_per_node=1 train.py --cfg-path pretrain_stage1.yaml
 ```
-## 2.Inference:
+## 3.Inference:
 ```bash
 python -m torch.distributed.run --nproc_per_node=1 evaluate.py --cfg-path prediction.yaml
 ```
-## 3.related data and model are saved below:
+## 4.related data and model are saved below:
 [https://zenodo.org/records/14375583](https://zenodo.org/records/15220346)
