@@ -1,5 +1,5 @@
 # Highly efficient discovery of active compounds against protein sequences with WiseInteract
-Official implementation of WiseInteract, a state-of-the-art method for compound protein interaction prediction. This repository contains all code, instructions, and model weights necessary to run the method or to retrain a model. If you have any questions, feel free to open an issue or reach out to us: niubuying@simm.ac.cn
+WiseInteract, a state-of-the-art method for compound protein interaction prediction. This repository contains all code, instructions, and model weights necessary to run the method or to retrain a model. If you have any questions, feel free to open an issue or reach out to us: niubuying@simm.ac.cn
 ![image](https://github.com/user-attachments/assets/179253b5-4de7-47b8-8907-2ea2edb0d227)
 
 # Description
@@ -36,7 +36,7 @@ esm-extract esm2_t33_650M_UR50D protein.txt proteins_emb_esm2 --repr_layers 33 -
 ```
 ## 2.Train:
 ```bash
-python -m torch.distributed.run --nproc_per_node=1 train.py --cfg-path pretrain_stage1.yaml
+python -m torch.distributed.run --nproc_per_node=1 train.py --cfg-path train.yaml
 ```
 ## 3.Inference:
 ```bash
