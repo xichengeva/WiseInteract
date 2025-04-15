@@ -69,9 +69,9 @@ def get_runner_class(cfg):
     return runner_cls
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "2" #0,1
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
 import warnings
+os.environ["CUDA_VISIBLE_DEVICES"] = "0" 
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 warnings.filterwarnings("ignore")
 
 def main():
