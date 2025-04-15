@@ -38,7 +38,7 @@ esm-extract esm2_t33_650M_UR50D protein.txt proteins_emb_esm2 --repr_layers 33 -
 ```bash
 python -m torch.distributed.run --nproc_per_node=1 train.py --cfg-path train.yaml
 ```
-## 3.Inference:
+## 3.Predict:
 ```bash
 python -m torch.distributed.run --nproc_per_node=1 evaluate.py --cfg-path prediction.yaml
 ```
