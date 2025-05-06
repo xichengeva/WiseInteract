@@ -1,5 +1,5 @@
 # Highly efficient discovery of active compounds against protein sequences with WiseInteract
-WiseInteract, a state-of-the-art method for compound protein interaction prediction. This repository contains all code, instructions, and model weights necessary to run the method or to retrain a model. If you have any questions, feel free to open an issue or reach out to us: niubuying@simm.ac.cn, xicheng@simm.ac.cn
+WiseInteract, a multi-modal large language model framework that uses compound structures and protein sequences to predict compound-protein interaction probability. This repository contains all code, instructions, and model weights necessary to run the method or to retrain a model. If you have any questions, feel free to open an issue or reach out to us: niubuying@simm.ac.cn, xichengeva@sjtu.edu.cn
 
 # Description
 
