@@ -1,5 +1,2 @@
 env:
-  # For default users
-  # cache_root: "cache"
-  # For internal use with persistent storage
-  cache_root: "/home/user-home/niubuying/CPI/LAVIS/cache"
+  cache_root: "cache"
