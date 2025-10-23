@@ -1,0 +1,12 @@
+datasets:
+  cpi_prediction: # name of the dataset builder
+    data_type: videos # [images|videos|features] we use features in this case for extracted video features
+    build_info:
+    # 训练集中只有阳性数据， 验证集和测试集中为了验证AUC_PRC加了一部分阴性数据
+      train:
+        url: /lnvme/home/niu_bu_ying/WiseInteract/data/part.parquet
+      val: 
+        url: /lnvme/home/niu_bu_ying/WiseInteract/data/part.parquet
+      test:
+        url: /lnvme/home/niu_bu_ying/WiseInteract/data/part.parquet
+      use_neg: add_neg0 # 需要加负样本为 add_neg

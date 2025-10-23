@@ -1,0 +1,50 @@
+model:
+  arch: blip2_portein_smiles_matching
+  model_type: pretrain
+  prefix_pretrained: /lnvme/home/niu_bu_ying/WiseInteract/lavis/output/model2/ ###
+  pretrained: /lnvme/home/niu_bu_ying/WiseInteract/lavis/output/model2/ 
+  use_grad_checkpoint: False
+
+datasets:
+  cpi_prediction: 
+    build_info:
+      test:
+        url: /lnvme/home/niu_bu_ying/WiseInteract/data/pairs_200_226.parquet
+      use_neg: others 
+    proteins_processor:
+        train:
+          name: "proteins_processor"
+        val:
+          name: "proteins_processor"
+        test:
+          name: "proteins_processor"
+    smiles_processor:
+        train:
+          name: "smiles_processor"
+        val:
+          name: "smiles_processor"
+        test:
+          name: "smiles_processor"
+
+run:
+  task: EvaluateCPI
+  # optimization-specific
+  batch_size_train: 1500
+  batch_size_eval: 1500
+  batch_size_test: 1500
+  num_workers: 6
+  
+  seed: 8686
+  output_dir: "output/pair" ###
+
+  evaluate: True
+  test_splits: ["test"]
+  evaluation_way: "pcm" 
+  datasets: "test"
+  test_path: /lnvme/home/niu_bu_ying/WiseInteract/data/pairs_200_226.parquet
+
+  # distribution-specific
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: True
