@@ -9,11 +9,11 @@ datasets:
   cpi_prediction: 
     build_info:
       train:
-        url: /lnvme/home/niu_bu_ying/WiseInteract/data/part.parquet
+        url: train.parquet
       val: 
-        url: /lnvme/home/niu_bu_ying/WiseInteract/data/part.parquet
+        url: val.parquet
       test:
-        url: /lnvme/home/niu_bu_ying/WiseInteract/data/part.parquet
+        url: test.parquet
       use_neg: add_neg1 
     proteins_processor:
         train:
