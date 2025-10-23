@@ -26,7 +26,7 @@ def load_json(file_path):
 @registry.register_processor("proteins_processor")
 class ProteinsFeatureProcessor(BaseProcessor):
     def __init__(self): 
-        self.seqIndexDict = load_json('/lnvme/home/niu_bu_ying/WiseInteract/protein/SeqIndex.json') 
+        self.seqIndexDict = load_json('protein/SeqIndex.json') 
 
     def get_attention_mask(self, seq):
         return torch.sum(seq != 1, dim=2) != 0
@@ -49,7 +49,7 @@ class ProteinsFeatureProcessor(BaseProcessor):
 
     def __call__(self, protein): 
         seqIndex = self.seqIndexDict[protein]
-        representations = torch.load('/lnvme/home/niu_bu_ying/WiseInteract/protein/proteins_emb_esm2/proteins%s.pt'% seqIndex) 
+        representations = torch.load('protein_path/proteins_emb_esm2/proteins%s.pt'% seqIndex) 
         rep = torch.Tensor(representations['representations'][33])
         rep = rep.unsqueeze(0)
         return rep
