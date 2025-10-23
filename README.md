@@ -16,6 +16,10 @@ git clone https://github.com/niubuying/WiseInteract
 ```
 ## 2.Installation
 ```bash
+conda env create -f environment.yaml
+```
+or
+```bash
 conda create -n cpi python=3.8
 conda activate cpi
 conda install -c conda-forge rdkit
@@ -25,6 +29,7 @@ pip install salesforce-lavis==1.0.0
 pip install --upgrade transformers==4.27
 pip install fair-esm
 pip install seaborn
+……
 ```
 
 # Running WiseInteract
