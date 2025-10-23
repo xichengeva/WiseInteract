@@ -1,15 +1,15 @@
 model:
   arch: blip2_portein_smiles_matching
   model_type: pretrain
-  prefix_pretrained: /lnvme/home/niu_bu_ying/WiseInteract/lavis/output/model2/ ###
-  pretrained: /lnvme/home/niu_bu_ying/WiseInteract/lavis/output/model2/ 
+  prefix_pretrained: model_path1/ ###
+  pretrained:  model_path1/ 
   use_grad_checkpoint: False
 
 datasets:
   cpi_prediction: 
     build_info:
       test:
-        url: /lnvme/home/niu_bu_ying/WiseInteract/data/pairs_200_226.parquet
+        url: test.parquet
       use_neg: others 
     proteins_processor:
         train:
@@ -41,7 +41,7 @@ run:
   test_splits: ["test"]
   evaluation_way: "pcm" 
   datasets: "test"
-  test_path: /lnvme/home/niu_bu_ying/WiseInteract/data/pairs_200_226.parquet
+  test_path: test.parquet
 
   # distribution-specific
   device: "cuda"
