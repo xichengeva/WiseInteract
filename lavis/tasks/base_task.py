@@ -229,7 +229,6 @@ class BaseTask:
                 loss /= accum_grad_iters #TODO: not affect loss_dict values for logging
 
             # after_train_step()
-            # 反向传播 的是 总loss
             if use_amp:
                 scaler.scale(loss).backward()
             else:
