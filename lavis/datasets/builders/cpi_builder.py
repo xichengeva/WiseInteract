@@ -13,7 +13,7 @@ class CPIBuilder(BaseDatasetBuilder):
         proteins_proc_cfg = self.config.get("proteins_processor")
         smiles_proc_cfg = self.config.get("smiles_processor")
 
-        if proteins_proc_cfg is not None: # vis is proteins
+        if proteins_proc_cfg is not None: 
             proteins_train_cfg = proteins_proc_cfg.get("train")
             proteins_eval_cfg = proteins_proc_cfg.get("val")
             proteins_test_cfg = proteins_proc_cfg.get("test")
@@ -22,7 +22,7 @@ class CPIBuilder(BaseDatasetBuilder):
             self.vis_processors["val"] = self._build_proc_from_cfg(proteins_eval_cfg)
             self.vis_processors["test"] = self._build_proc_from_cfg(proteins_test_cfg)
 
-        if smiles_proc_cfg is not None: # txt is smiles
+        if smiles_proc_cfg is not None: 
             smiles_train_cfg = smiles_proc_cfg.get("train")
             smiles_eval_cfg = smiles_proc_cfg.get("val")
             smiles_test_cfg = smiles_proc_cfg.get("test")
