@@ -8,6 +8,7 @@ WiseInteract, a multi-modal large language model framework that uses compound st
 **Things WiseInteract can do**
 - Virtual screening
 - Target discovering
+- Drug repurposing
 
 # Setup Environment
 ## 1. Clone the current repo
