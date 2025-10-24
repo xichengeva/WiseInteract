@@ -13,8 +13,6 @@ class CPIDataset(BaseDataset):
         """
         protein_processor (string): protein processor
         smiles_processor (string): smiles processor
-        vis_root (string): Root directory of images (e.g. coco/images/)
-        ann_paths (string): Root directory of images (e.g. coco/images/)
         """
         self.datatype = datatype
         self.protein_processor = protein_processor
@@ -64,8 +62,6 @@ class CPIDataset(BaseDataset):
         samples = {}
         samples['proteins'] = proteins
         samples['smiles'] = smiles
-        # if self.batch_flag == True:
-        #     samples['batches'] = torch.Tensor(batches).long()
 
         if self.datatype == "add_neg1":
             samples["negproteins"] = negprotein1
