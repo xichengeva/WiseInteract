@@ -12,7 +12,7 @@ WiseInteract, a multi-modal large language model framework that uses compound st
 # Setup Environment
 ## 1. Clone the current repo
 ```bash
-git clone https://github.com/niubuying/WiseInteract
+git clone [https://github.com/niubuying/WiseInteract](https://github.com/niubuying/WiseInteract.git)
 ```
 ## 2.Installation
 ```bash
